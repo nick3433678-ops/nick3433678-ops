@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maison Lumière — Haute Mode Française</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noir: #0a0a0a;
+    --creme: #f5f0e8;
+    --or: #b8965a;
+    --or-light: #d4af76;
+    --rouge: #8b1a1a;
+    --gris: #2a2a2a;
+    --gris-clair: #e8e2d8;
+    --blanc: #fdfaf5;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--blanc);
+    color: var(--noir);
+    overflow-x: hidden;
+  }
+
+  /* ── PAGE SYSTEM ── */
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,10,0.97);
+    backdrop-filter: blur(10px);
+    padding: 0 4rem;
+    height: 70px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(184,150,90,0.3);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--or);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .nav-logo span { font-style: italic; color: var(--or-light); }
+
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gris-clair);
+    text-decoration: none;
+    transition: color 0.3s;
+    cursor: pointer;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--or); }
+
+  .nav-cart {
+    display: flex; align-items: center; gap: 1.5rem;
+  }
+  .cart-btn {
+    background: none; border: 1px solid var(--or);
+    color: var(--or); padding: 0.45rem 1.2rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.68rem; letter-spacing: 0.2em;
+    text-transform: uppercase; cursor: pointer;
+    transition: all 0.3s;
+  }
+  .cart-btn:hover { background: var(--or); color: var(--noir); }
+
+  /* ── HERO ── */
+  .hero {
+    height: 100vh;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1208 50%, #0f0d08 100%);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image:
+      url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1800&q=80');
+    background-size: cover; background-position: center;
+    opacity: 0.22;
+  }
+
+  .hero-ornament {
+    position: absolute;
+    width: 600px; height: 600px;
+    border: 1px solid rgba(184,150,90,0.12);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation: rotate 30s linear infinite;
+  }
+  .hero-ornament::before {
+    content: '';
+    position: absolute; inset: 20px;
+    border: 1px solid rgba(184,150,90,0.08);
+    border-radius: 50%;
+  }
+
+  @keyframes rotate { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center; padding: 0 2rem;
+  }
+
+  .hero-tag {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.68rem; font-weight: 300;
+    letter-spacing: 0.5em; text-transform: uppercase;
+    color: var(--or); margin-bottom: 2rem;
+    opacity: 0; animation: fadeUp 1s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4rem, 10vw, 9rem);
+    font-weight: 300; line-height: 0.9;
+    color: var(--creme);
+    letter-spacing: -0.02em;
+    opacity: 0; animation: fadeUp 1s 0.6s forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--or-light); display: block; }
+
+  .hero-sub {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8rem; font-weight: 200;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(245,240,232,0.5);
+    margin-top: 1.5rem;
+    opacity: 0; animation: fadeUp 1s 0.9s forwards;
+  }
+
+  .hero-cta {
+    display: flex; gap: 1.5rem; justify-content: center;
+    margin-top: 3.5rem;
+    opacity: 0; animation: fadeUp 1s 1.2s forwards;
+  }
+
+  .btn-primary {
+    background: var(--or); color: var(--noir);
+    border: none; padding: 1rem 2.5rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.3em;
+    text-transform: uppercase; cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-primary:hover { background: var(--or-light); transform: translateY(-2px); }
+
+  .btn-outline {
+    background: none; color: var(--creme);
+    border: 1px solid rgba(245,240,232,0.4);
+    padding: 1rem 2.5rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.3em;
+    text-transform: uppercase; cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-outline:hover { border-color: var(--or); color: var(--or); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SCROLL INDICATOR ── */
+  .scroll-indicator {
+    position: absolute; bottom: 2.5rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: rgba(184,150,90,0.5);
+    font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--or), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+
+  /* ── PAGE SECTIONS ── */
+  .section-header {
+    text-align: center; padding: 6rem 2rem 4rem;
+  }
+  .section-eyebrow {
+    font-size: 0.65rem; letter-spacing: 0.5em;
+    text-transform: uppercase; color: var(--or);
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 300; color: var(--noir);
+    line-height: 1.1;
+  }
+  .section-title em { font-style: italic; color: var(--or); }
+  .section-divider {
+    width: 60px; height: 1px;
+    background: var(--or); margin: 1.5rem auto 0;
+  }
+
+  /* ── PRODUCT GRID ── */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem; padding: 2rem 4rem 6rem;
+    max-width: 1400px; margin: 0 auto;
+  }
+
+  .product-card {
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    cursor: pointer;
+    transition: all 0.4s;
+    overflow: hidden;
+    position: relative;
+  }
+  .product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.12); }
+
+  .product-img {
+    width: 100%; aspect-ratio: 3/4;
+    object-fit: cover; display: block;
+    transition: transform 0.6s ease;
+    background: var(--gris-clair);
+  }
+  .product-card:hover .product-img { transform: scale(1.04); }
+
+  .product-badge {
+    position: absolute; top: 1rem; left: 1rem;
+    background: var(--rouge); color: white;
+    font-size: 0.6rem; letter-spacing: 0.2em;
+    text-transform: uppercase; padding: 0.3rem 0.7rem;
+  }
+
+  .product-info { padding: 1.2rem 1.5rem 1.5rem; }
+  .product-category {
+    font-size: 0.6rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--or);
+    margin-bottom: 0.4rem;
+  }
+  .product-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 400;
+    color: var(--noir); margin-bottom: 0.5rem;
+  }
+  .product-desc {
+    font-size: 0.75rem; color: #666; line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .product-footer {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .product-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; color: var(--noir);
+  }
+  .product-price .old { text-decoration: line-through; color: #aaa; font-size: 1rem; margin-right: 0.5rem; }
+  .add-btn {
+    background: var(--noir); color: white;
+    border: none; padding: 0.6rem 1.2rem;
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase; cursor: pointer;
+    transition: background 0.3s;
+  }
+  .add-btn:hover { background: var(--or); }
+
+  /* ── FEATURED BANNER ── */
+  .featured-banner {
+    background: var(--noir);
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 70vh; margin: 2rem 0;
+  }
+  .featured-img {
+    width: 100%; height: 100%;
+    object-fit: cover; min-height: 500px;
+    display: block;
+  }
+  .featured-content {
+    display: flex; flex-direction: column;
+    justify-content: center; padding: 5rem;
+    color: var(--creme);
+  }
+  .featured-tag {
+    font-size: 0.65rem; letter-spacing: 0.5em;
+    text-transform: uppercase; color: var(--or);
+    margin-bottom: 1.5rem;
+  }
+  .featured-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem; font-weight: 300;
+    line-height: 1.1; margin-bottom: 1.5rem;
+  }
+  .featured-title em { font-style: italic; color: var(--or-light); display: block; }
+  .featured-text {
+    font-size: 0.85rem; font-weight: 300;
+    line-height: 1.8; color: rgba(245,240,232,0.6);
+    max-width: 380px; margin-bottom: 2.5rem;
+  }
+
+  /* ── CATEGORIES ── */
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; padding: 2rem 4rem 6rem;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .category-card {
+    position: relative; overflow: hidden;
+    aspect-ratio: 3/4; cursor: pointer;
+  }
+  .category-card img {
+    width: 100%; height: 100%;
+    object-fit: cover; transition: transform 0.6s;
+    display: block;
+  }
+  .category-card:hover img { transform: scale(1.06); }
+  .category-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+    display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 2rem;
+  }
+  .category-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 300;
+    color: white; margin-bottom: 0.5rem;
+  }
+  .category-count {
+    font-size: 0.65rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--or-light);
+  }
+
+  /* ── LOOKBOOK ── */
+  .lookbook-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1rem; padding: 2rem 4rem 6rem;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .look-item {
+    overflow: hidden; position: relative;
+  }
+  .look-item.large { grid-row: span 2; }
+  .look-item img {
+    width: 100%; height: 100%;
+    min-height: 280px; object-fit: cover; display: block;
+    transition: transform 0.6s;
+  }
+  .look-item:hover img { transform: scale(1.04); }
+  .look-label {
+    position: absolute; bottom: 1rem; left: 1rem;
+    background: rgba(10,10,10,0.8);
+    color: var(--creme);
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase; padding: 0.4rem 0.8rem;
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-section {
+    background: var(--noir); padding: 1.5rem 0;
+    overflow: hidden; border-top: 1px solid rgba(184,150,90,0.2);
+    border-bottom: 1px solid rgba(184,150,90,0.2);
+  }
+  .marquee-track {
+    display: flex; gap: 4rem;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; font-style: italic;
+    color: var(--or); letter-spacing: 0.1em;
+    flex-shrink: 0;
+  }
+  .marquee-dot { color: rgba(184,150,90,0.3); }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── ABOUT ── */
+  .about-section {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; max-width: 100%; margin: 4rem 0;
+  }
+  .about-img { width: 100%; height: 100%; object-fit: cover; min-height: 600px; display: block; }
+  .about-content { padding: 6rem 5rem; display: flex; flex-direction: column; justify-content: center; }
+  .about-content p { font-size: 0.9rem; line-height: 1.9; color: #555; margin-bottom: 1.2rem; }
+
+  /* ── STATS ── */
+  .stats-bar {
+    background: var(--nor); background: #f8f4ee;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    padding: 4rem;
+    border-top: 1px solid var(--gris-clair);
+    border-bottom: 1px solid var(--gris-clair);
+  }
+  .stat-item { text-align: center; }
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem; font-weight: 300; color: var(--or);
+    display: block;
+  }
+  .stat-label { font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; color: #888; }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials { padding: 6rem 4rem; background: var(--noir); }
+  .testimonials .section-title { color: var(--creme); }
+  .testimonials .section-eyebrow { color: var(--or); }
+  .testimonials .section-divider { background: var(--or); }
+  .testi-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2rem; margin-top: 4rem; max-width: 1200px; margin: 4rem auto 0;
+  }
+  .testi-card {
+    border: 1px solid rgba(184,150,90,0.2);
+    padding: 2.5rem; position: relative;
+  }
+  .testi-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem; color: var(--or); opacity: 0.3;
+    line-height: 0.8; margin-bottom: 1rem;
+  }
+  .testi-text {
+    font-size: 0.85rem; line-height: 1.8;
+    color: rgba(245,240,232,0.7); font-style: italic;
+    margin-bottom: 1.5rem;
+  }
+  .testi-author {
+    font-size: 0.65rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--or);
+  }
+
+  /* ── NEWSLETTER ── */
+  .newsletter {
+    background: linear-gradient(135deg, #f5f0e8, #e8e0d0);
+    padding: 6rem 4rem; text-align: center;
+  }
+  .newsletter-form {
+    display: flex; gap: 0; max-width: 500px;
+    margin: 2.5rem auto 0;
+  }
+  .newsletter-form input {
+    flex: 1; padding: 1rem 1.5rem;
+    border: 1px solid #ccc; border-right: none;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8rem; background: white;
+    outline: none;
+  }
+  .newsletter-form button {
+    background: var(--noir); color: white;
+    border: none; padding: 1rem 2rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.68rem; letter-spacing: 0.2em;
+    text-transform: uppercase; cursor: pointer;
+    transition: background 0.3s;
+  }
+  .newsletter-form button:hover { background: var(--or); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--noir); color: var(--gris-clair);
+    padding: 5rem 4rem 2rem;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem; margin-bottom: 4rem;
+  }
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 300;
+    color: var(--or); letter-spacing: 0.2em;
+    margin-bottom: 1rem;
+  }
+  .footer-tagline { font-size: 0.75rem; color: rgba(245,240,232,0.4); line-height: 1.7; }
+  .footer-col h4 {
+    font-size: 0.65rem; letter-spacing: 0.4em;
+    text-transform: uppercase; color: var(--or);
+    margin-bottom: 1.5rem;
+  }
+  .footer-col a {
+    display: block; color: rgba(245,240,232,0.5);
+    text-decoration: none; font-size: 0.8rem;
+    margin-bottom: 0.7rem; cursor: pointer;
+    transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--or); }
+  .footer-bottom {
+    border-top: 1px solid rgba(184,150,90,0.15);
+    padding-top: 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-copy { font-size: 0.7rem; color: rgba(245,240,232,0.3); }
+  .footer-social { display: flex; gap: 1.5rem; }
+  .footer-social a {
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: rgba(245,240,232,0.4);
+    text-decoration: none; cursor: pointer; transition: color 0.3s;
+  }
+  .footer-social a:hover { color: var(--or); }
+
+  /* ── INNER PAGE HERO ── */
+  .inner-hero {
+    height: 50vh; background: var(--noir);
+    position: relative; display: flex;
+    align-items: center; justify-content: center; flex-direction: column;
+    overflow: hidden;
+  }
+  .inner-hero-bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    opacity: 0.25;
+  }
+  .inner-hero-content { position: relative; z-index: 2; text-align: center; }
+  .inner-hero .section-eyebrow { color: var(--or); }
+  .inner-hero .section-title { color: var(--creme); }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    display: flex; gap: 1rem; padding: 2rem 4rem;
+    border-bottom: 1px solid var(--gris-clair);
+    flex-wrap: wrap; align-items: center;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .filter-label { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: #888; }
+  .filter-btn {
+    background: none; border: 1px solid var(--gris-clair);
+    padding: 0.4rem 1rem; font-size: 0.7rem;
+    letter-spacing: 0.1em; cursor: pointer;
+    transition: all 0.3s; color: var(--noir);
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--noir); color: white; border-color: var(--noir);
+  }
+
+  /* ── CONTACT ── */
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    max-width: 1200px; margin: 0 auto;
+    padding: 4rem 4rem 6rem; gap: 5rem;
+  }
+  .contact-info h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; margin-bottom: 0.5rem;
+  }
+  .contact-detail {
+    margin-bottom: 2rem;
+  }
+  .contact-detail-label {
+    font-size: 0.6rem; letter-spacing: 0.4em;
+    text-transform: uppercase; color: var(--or);
+    margin-bottom: 0.4rem;
+  }
+  .contact-detail p { font-size: 0.85rem; line-height: 1.7; color: #555; }
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: #888; }
+  .form-group input, .form-group textarea, .form-group select {
+    border: 1px solid var(--gris-clair); padding: 0.8rem 1rem;
+    font-family: 'Jost', sans-serif; font-size: 0.85rem;
+    background: white; outline: none; transition: border-color 0.3s;
+  }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--or); }
+  .form-group textarea { min-height: 130px; resize: vertical; }
+
+  /* ── BREADCRUMB ── */
+  .breadcrumb {
+    padding: 1rem 4rem;
+    font-size: 0.68rem; letter-spacing: 0.1em;
+    color: #aaa; border-bottom: 1px solid var(--gris-clair);
+  }
+  .breadcrumb span { cursor: pointer; }
+  .breadcrumb span:hover { color: var(--or); }
+
+  /* ── PROMO STRIP ── */
+  .promo-strip {
+    background: var(--or); color: var(--noir);
+    text-align: center; padding: 0.6rem;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+  }
+
+  /* ── PAGE-SPECIFIC BACKGROUNDS ── */
+  #page-ropa .inner-hero-bg { background-image: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1400&q=80'); }
+  #page-accesorios .inner-hero-bg { background-image: url('https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=1400&q=80'); }
+  #page-catalogo .inner-hero-bg { background-image: url('https://images.unsplash.com/photo-1445205170230-053b83016050?w=1400&q=80'); }
+  #page-lookbook .inner-hero-bg { background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=80'); }
+  #page-nosotros .inner-hero-bg { background-image: url('https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=1400&q=80'); }
+  #page-contacto .inner-hero-bg { background-image: url('https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1400&q=80'); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 0 1.5rem; }
+    .nav-links { display: none; }
+    .hero-title { font-size: 4rem; }
+    .product-grid { padding: 2rem 1.5rem; grid-template-columns: repeat(2, 1fr); }
+    .categories-grid { grid-template-columns: 1fr 1fr; padding: 2rem 1.5rem; }
+    .featured-banner { grid-template-columns: 1fr; }
+    .featured-content { padding: 3rem 2rem; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    .contact-grid { grid-template-columns: 1fr; padding: 2rem 1.5rem; }
+    .testi-grid { grid-template-columns: 1fr; }
+    .about-section { grid-template-columns: 1fr; }
+    .lookbook-grid { grid-template-columns: 1fr 1fr; }
+    .lookbook-grid .look-item.large { grid-row: span 1; }
+    .filter-bar { padding: 1rem 1.5rem; }
+    .breadcrumb { padding: 1rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PROMO STRIP -->
+<div class="promo-strip">✦ Livraison gratuite en France pour toute commande supérieure à 150€ ✦ Collection Automne-Hiver 2025 disponible ✦</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">Maison <span>Lumière</span></div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" id="nav-home" class="active">Accueil</a></li>
+    <li><a onclick="showPage('ropa')" id="nav-ropa">Vêtements</a></li>
+    <li><a onclick="showPage('accesorios')" id="nav-accesorios">Accessoires</a></li>
+    <li><a onclick="showPage('catalogo')" id="nav-catalogo">Catalogue</a></li>
+    <li><a onclick="showPage('lookbook')" id="nav-lookbook">Lookbook</a></li>
+    <li><a onclick="showPage('nosotros')" id="nav-nosotros">Notre Maison</a></li>
+    <li><a onclick="showPage('contacto')" id="nav-contacto">Contact</a></li>
+  </ul>
+  <div class="nav-cart">
+    <button class="cart-btn">🛍 Panier (0)</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     PAGE: HOME
+══════════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-ornament"></div>
+    <div class="hero-content">
+      <p class="hero-tag">Paris · Collection 2025</p>
+      <h1 class="hero-title">Maison<em>Lumière</em></h1>
+      <p class="hero-sub">Haute Mode Française — L'élégance au quotidien</p>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="showPage('catalogo')">Découvrir la Collection</button>
+        <button class="btn-outline" onclick="showPage('lookbook')">Voir le Lookbook</button>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <span>Défiler</span>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <span class="marquee-item">Nouvelle Collection</span><span class="marquee-dot"> ✦ </span>
+      <span class="marquee-item">Prêt-à-Porter</span><span class="marquee-dot"> ✦ </span>
+      <span class="marquee-item">Accessoires Exclusifs</span><span class="marquee-dot"> ✦ </span>
+      <span class="marquee-item">Savoir-Faire Français</span><span class="marquee-dot"> ✦ </span>
+      <span class="marquee-item">Matières Nobles</span><span class="marquee-dot"> ✦ </span>
+      <span class="marquee-item">Édition Limitée</span><span class="marquee-dot"> ✦ </span>
+      <span class="marquee-item">Nouvelle Collection</span><span class="marquee-dot"> ✦ </span>
+      <span class="marquee-item">Prêt-à-Porter</span><span class="marquee-dot"> ✦ </span>
+      <span class="marquee-item">Accessoires Exclusifs</span><span class="marquee-dot"> ✦ </span>
+      <span class="marquee-item">Savoir-Faire Français</span><span class="marquee-dot"> ✦ </span>
+      <span class="marquee-item">Matières Nobles</span><span class="marquee-dot"> ✦ </span>
+      <span class="marquee-item">Édition Limitée</span><span class="marquee-dot"> ✦ </span>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <section>
+    <div class="section-header">
+      <p class="section-eyebrow">Nos Univers</p>
+      <h2 class="section-title">Explorez <em>nos catégories</em></h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="categories-grid">
+      <div class="category-card" onclick="showPage('ropa')">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80" alt="Vêtements">
+        <div class="category-overlay">
+          <div class="category-name">Vêtements</div>
+          <div class="category-count">48 pièces</div>
+        </div>
+      </div>
+      <div class="category-card" onclick="showPage('accesorios')">
+        <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80" alt="Accessoires">
+        <div class="category-overlay">
+          <div class="category-name">Accessoires</div>
+          <div class="category-count">32 pièces</div>
+        </div>
+      </div>
+      <div class="category-card" onclick="showPage('catalogo')">
+        <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&q=80" alt="Catalogue">
+        <div class="category-overlay">
+          <div class="category-name">Catalogue Complet</div>
+          <div class="category-count">120 pièces</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED -->
+  <div class="featured-banner">
+    <img class="featured-img" src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=900&q=80" alt="Featured">
+    <div class="featured-content">
+      <p class="featured-tag">Coup de Cœur — Automne 2025</p>
+      <h3 class="featured-title">Le Trench<em>Iconique</em></h3>
+      <p class="featured-text">Notre trench-coat signature, taillé dans un gabardine de coton brossé, incarne l'élégance parisienne dans sa forme la plus pure. Chaque couture témoigne d'un savoir-faire exceptionnel transmis depuis 1932.</p>
+      <button class="btn-primary" onclick="showPage('ropa')">Découvrir la Pièce</button>
+    </div>
+  </div>
+
+  <!-- FEATURED PRODUCTS HOME -->
+  <section>
+    <div class="section-header">
+      <p class="section-eyebrow">Sélection du Moment</p>
+      <h2 class="section-title">Nos <em>Coups de Cœur</em></h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="product-grid">
+      <div class="product-card">
+        <span class="product-badge">Nouveauté</span>
+        <img class="product-img" src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80" alt="Trench">
+        <div class="product-info">
+          <p class="product-category">Outerwear</p>
+          <h3 class="product-name">Trench Classique Beige</h3>
+          <p class="product-desc">Gabardine de coton, doublure en soie, coupe ajustée</p>
+          <div class="product-footer">
+            <span class="product-price">€ 485</span>
+            <button class="add-btn">Ajouter</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <img class="product-img" src="https://images.unsplash.com/photo-1494631899672-8fd5de6e7aba?w=600&q=80" alt="Robe">
+        <div class="product-info">
+          <p class="product-category">Robes</p>
+          <h3 class="product-name">Robe Midi Crêpe Ivoire</h3>
+          <p class="product-desc">Crêpe de viscose, col en V, ceinture incluse</p>
+          <div class="product-footer">
+            <span class="product-price">€ 320</span>
+            <button class="add-btn">Ajouter</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <span class="product-badge">-20%</span>
+        <img class="product-img" src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80" alt="Sac">
+        <div class="product-info">
+          <p class="product-category">Sacs</p>
+          <h3 class="product-name">Sac Baguette Cognac</h3>
+          <p class="product-desc">Cuir pleine fleur, quincaillerie dorée</p>
+          <div class="product-footer">
+            <span class="product-price"><span class="old">€ 395</span>€ 316</span>
+            <button class="add-btn">Ajouter</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <img class="product-img" src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80" alt="Veste">
+        <div class="product-info">
+          <p class="product-category">Vestes</p>
+          <h3 class="product-name">Veste Tweed Noir & Blanc</h3>
+          <p class="product-desc">Tweed de laine, boutons dorés, coupe droite</p>
+          <div class="product-footer">
+            <span class="product-price">€ 560</span>
+            <button class="add-btn">Ajouter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-number">1932</span>
+      <span class="stat-label">Fondée à Paris</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">93+</span>
+      <span class="stat-label">Années d'expertise</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">120</span>
+      <span class="stat-label">Pièces par saison</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">48</span>
+      <span class="stat-label">Pays livrés</span>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="testimonials">
+    <div class="section-header" style="padding-bottom:0">
+      <p class="section-eyebrow">Témoignages</p>
+      <h2 class="section-title" style="color:var(--creme)">Elles parlent <em>de nous</em></h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">Chaque pièce de Maison Lumière est une œuvre d'art portée. La qualité des matières et la coupe irréprochable m'ont conquise dès le premier essayage.</p>
+        <p class="testi-author">— Sophie M., Paris</p>
+      </div>
+      <div class="testi-card">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">Je porte le trench depuis trois saisons et il est toujours impeccable. C'est ça, la vraie mode française — intemporelle et raffinée.</p>
+        <p class="testi-author">— Charlotte L., Lyon</p>
+      </div>
+      <div class="testi-card">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">Le service client est à la hauteur de la marque : attentionné, discret et professionnel. Une expérience d'achat qui ressemble au luxe à la française.</p>
+        <p class="testi-author">— Isabelle R., Bordeaux</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter">
+    <p class="section-eyebrow">Restez Informée</p>
+    <h2 class="section-title">L'art de vivre <em>à la française</em></h2>
+    <p style="font-size:0.85rem;color:#777;margin-top:1rem">Recevez nos nouvelles collections, invitations privées et inspirations directement dans votre boîte mail.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="Votre adresse e-mail">
+      <button>S'abonner</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Maison Lumière</div>
+        <p class="footer-tagline">Depuis 1932, nous créons des pièces intemporelles qui célèbrent l'élégance française. Chaque création est le fruit d'un savoir-faire artisanal transmis de génération en génération.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a onclick="showPage('home')">Accueil</a>
+        <a onclick="showPage('ropa')">Vêtements</a>
+        <a onclick="showPage('accesorios')">Accessoires</a>
+        <a onclick="showPage('catalogo')">Catalogue</a>
+        <a onclick="showPage('lookbook')">Lookbook</a>
+      </div>
+      <div class="footer-col">
+        <h4>La Maison</h4>
+        <a onclick="showPage('nosotros')">Notre Histoire</a>
+        <a onclick="showPage('nosotros')">Nos Ateliers</a>
+        <a onclick="showPage('nosotros')">Nos Valeurs</a>
+        <a onclick="showPage('contacto')">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a onclick="showPage('contacto')">Service Client</a>
+        <a onclick="showPage('contacto')">Guide des Tailles</a>
+        <a onclick="showPage('contacto')">Livraisons & Retours</a>
+        <a onclick="showPage('contacto')">Boutiques</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Maison Lumière. Tous droits réservés. Paris, France.</p>
+      <div class="footer-social">
+        <a>Instagram</a>
+        <a>Pinterest</a>
+        <a>Facebook</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: VÊTEMENTS
+══════════════════════════════════════════ -->
+<div class="page" id="page-ropa">
+  <div class="inner-hero" style="margin-top:70px">
+    <div class="inner-hero-bg"></div>
+    <div class="inner-hero-content">
+      <p class="section-eyebrow">Collection 2025</p>
+      <h1 class="section-title" style="color:var(--creme)">Vêtements</h1>
+      <div class="section-divider"></div>
+    </div>
+  </div>
+  <div class="breadcrumb"><span onclick="showPage('home')">Accueil</span> / Vêtements</div>
+
+  <div class="filter-bar">
+    <span class="filter-label">Filtrer :</span>
+    <button class="filter-btn active">Tout</button>
+    <button class="filter-btn">Robes</button>
+    <button class="filter-btn">Vestes</button>
+    <button class="filter-btn">Pantalons</button>
+    <button class="filter-btn">Chemisiers</button>
+    <button class="filter-btn">Manteaux</button>
+    <button class="filter-btn">Jupes</button>
+  </div>
+
+  <div class="product-grid">
+    <div class="product-card">
+      <span class="product-badge">Nouveauté</span>
+      <img class="product-img" src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80" alt="Trench">
+      <div class="product-info">
+        <p class="product-category">Manteaux</p>
+        <h3 class="product-name">Trench Classique Beige</h3>
+        <p class="product-desc">Gabardine de coton double face, doublure en soie, épaulettes dorées</p>
+        <div class="product-footer"><span class="product-price">€ 485</span><button class="add-btn">Ajouter</button></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <img class="product-img" src="https://images.unsplash.com/photo-1494631899672-8fd5de6e7aba?w=600&q=80" alt="Robe">
+      <div class="product-info">
+        <p class="product-category">Robes</p>
+        <h3 class="product-name">Robe Midi Crêpe Ivoire</h3>
+        <p class="product-desc">Crêpe de viscose, col en V, ceinture croisée incluse</p>
+        <div class="product-footer"><span class="product-price">€ 320</span><button class="add-btn">Ajouter</button></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <img class="product-img" src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80" alt="Veste Tweed">
+      <div class="product-info">
+        <p class="product-category">Vestes</p>
+        <h3 class="product-name">Veste Tweed Noir & Blanc</h3>
+        <p class="product-desc">Tweed de laine irlandaise, boutons dorés, coupe droite structurée</p>
+        <div class="product-footer"><span class="product-price">€ 560</span><button class="add-btn">Ajouter</button></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <span class="product-badge">Best-seller</span>
+      <img class="product-img" src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=600&q=80" alt="Robe noire">
+      <div class="product-info">
+        <p class="product-category">Robes</p>
+        <h3 class="product-name">Petite Robe Noire</h3>
+        <p class="product-desc">Soie de charmeuse, col bateau, dos légèrement décolleté</p>
+        <div class="product-footer"><span class="product-price">€ 445</span><button class="add-btn">Ajouter</button></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <img class="product-img" src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80" alt="Blazer">
+      <div class="product-info">
+        <p class="product-category">Vestes</p>
+        <h3 class="product-name">Blazer Crème Structuré</h3>
+        <p class="product-desc">Laine mélangée, revers crantés, doublure imprimée</p>
+        <div class="product-footer"><span class="product-price">€ 390</span><button class="add-btn">Ajouter</button></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <span class="product-badge">-15%</span>
+      <img class="product-img" src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=600&q=80" alt="Jupe">
+      <div class="product-info">
+        <p class="product-category">Jupes</p>
+        <h3 class="product-name">Jupe Midi Plissée Écrue</h3>
+        <p class="product-desc">Satin de soie, taille haute, fermeture invisible</p>
+        <div class="product-footer"><span class="product-price"><span class="old">€ 275</span>€ 234</span><button class="add-btn">Ajouter</button></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <img class="product-img" src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80" alt="Pantalon">
+      <div class="product-info">
+        <p class="product-category">Pantalons</p>
+        <h3 class="product-name">Pantalon Large Caramel</h3>
+        <p class="product-desc">Crêpe de laine, jambes larges, pinces marquées</p>
+        <div class="product-footer"><span class="product-price">€ 295</span><button class="add-btn">Ajouter</button></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <img class="product-img" src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80" alt="Chemisier">
+      <div class="product-info">
+        <p class="product-category">Chemisiers</p>
+        <h3 class="product-name">Chemisier Soie Poudre</h3>
+        <p class="product-desc">Soie lavée, col claudine, manches longues avec poignets</p>
+        <div class="product-footer"><span class="product-price">€ 240</span><button class="add-btn">Ajouter</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="featured-banner">
+    <img class="featured-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80" alt="Lookbook">
+    <div class="featured-content">
+      <p class="featured-tag">Conseil Style</p>
+      <h3 class="featured-title">L'art du<em>Layering</em></h3>
+      <p class="featured-text">Découvrez comment nos stylistes associent les pièces de la collection pour créer des silhouettes intemporelles et sophistiquées. Le layering à la française, c'est l'art de superposer sans jamais alourdir.</p>
+      <button class="btn-primary" onclick="showPage('lookbook')">Voir le Lookbook</button>
+    </div>
+  </div>
+
+  <div class="newsletter" style="padding:4rem">
+    <p class="section-eyebrow">Alertes Nouveautés</p>
+    <h3 class="section-title" style="font-size:2rem">Soyez la première <em>informée</em></h3>
+    <div class="newsletter-form"><input type="email" placeholder="Votre e-mail"><button>Recevoir les alertes</button></div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div><div class="footer-brand">Maison Lumière</div><p class="footer-tagline">L'élégance française depuis 1932.</p></div>
+      <div class="footer-col"><h4>Navigation</h4><a onclick="showPage('home')">Accueil</a><a onclick="showPage('ropa')">Vêtements</a><a onclick="showPage('accesorios')">Accessoires</a><a onclick="showPage('catalogo')">Catalogue</a></div>
+      <div class="footer-col"><h4>La Maison</h4><a onclick="showPage('nosotros')">Notre Histoire</a><a onclick="showPage('contacto')">Contact</a></div>
+      <div class="footer-col"><h4>Services</h4><a onclick="showPage('contacto')">Service Client</a><a onclick="showPage('contacto')">Livraisons</a></div>
+    </div>
+    <div class="footer-bottom"><p class="footer-copy">© 2025 Maison Lumière. Paris.</p><div class="footer-social"><a>Instagram</a><a>Pinterest</a></div></div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: ACCESSOIRES
+══════════════════════════════════════════ -->
+<div class="page" id="page-accesorios">
+  <div class="inner-hero" style="margin-top:70px">
+    <div class="inner-hero-bg"></div>
+    <div class="inner-hero-content">
+      <p class="section-eyebrow">Détails qui font la différence</p>
+      <h1 class="section-title" style="color:var(--creme)">Accessoires</h1>
+      <div class="section-divider"></div>
+    </div>
+  </div>
+  <div class="breadcrumb"><span onclick="showPage('home')">Accueil</span> / Accessoires</div>
+
+  <div class="filter-bar">
+    <span class="filter-label">Filtrer :</span>
+    <button class="filter-btn active">Tout</button>
+    <button class="filter-btn">Sacs</button>
+    <button class="filter-btn">Bijoux</button>
+    <button class="filter-btn">Foulards</button>
+    <button class="filter-btn">Ceintures</button>
+    <button class="filter-btn">Chapeaux</button>
+  </div>
+
+  <div class="product-grid">
+    <div class="product-card">
+      <span class="product-badge">-20%</span>
+      <img class="product-img" src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80" alt="Sac">
+      <div class="product-info">
+        <p class="product-category">Sacs</p>
+        <h3 class="product-name">Sac Baguette Cognac</h3>
+        <p class="product-desc">Cuir pleine fleur, doublure en daim, quincaillerie dorée</p>
+        <div class="product-footer"><span class="product-price"><span class="old">€ 395</span>€ 316</span><button class="add-btn">Ajouter</button></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <img class="product-img" src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&q=80" alt="Foulard">
+      <div class="product-info">
+        <p class="product-category">Foulards</p>
+        <h3 class="product-name">Carré de Soie Imprimé</h3>
+        <p class="product-desc">Soie twill 90×90cm, motif floral exclusif, ourlet roulotté main</p>
+        <div class="product-footer"><span class="product-price">€ 180</span><button class="add-btn">Ajouter</button></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <span class="product-badge">Exclusif</span>
+      <img class="product-img" src="https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=600&q=80" alt="Bijou">
+      <div class="product-info">
+        <p class="product-category">Bijoux</p>
+        <h3 class="product-name">Collier Perles Baroque</h3>
+        <p class="product-desc">Perles d'eau douce, fermoir en or 18 carats</p>
+        <div class="product-footer"><span class="product-price">€ 220</span><button class="add-btn">Ajouter</button></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <img class="product-img" src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&q=80" alt="Sac cuir">
+      <div class="product-info">
+        <p class="product-category">Sacs</p>
+        <h3 class="product-name">Tote Bag Cuir Naturel</h3>
+        <p class="product-desc">Cuir végétal tanné, anses longues, compartiment intérieur</p>
+        <div class="product-footer"><span class="product-price">€ 465</span><button class="add-btn">Ajouter</button></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <img class="product-img" src="https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=600&q=80" alt="Ceinture">
+      <div class="product-info">
+        <p class="product-category">Ceintures</p>
+        <h3 class="product-name">Ceinture Cuir Tressé</h3>
+        <p class="product-desc">Cuir grainé nappa, boucle dorée, largeur 3 cm</p>
+        <div class="product-footer"><span class="product-price">€ 145</span><button class="add-btn">Ajouter</button></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <span class="product-badge">Nouveau</span>
+      <img class="product-img" src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=600&q=80" alt="Chapeau">
+      <div class="product-info">
+        <p class="product-category">Chapeaux</p>
+        <h3 class="product-name">Chapeau Feutre Camel</h3>
+        <p class="product-desc">Feutre de laine, ruban en soie, bord large</p>
+        <div class="product-footer"><span class="product-price">€ 195</span><button class="add-btn">Ajouter</button></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div><div class="footer-brand">Maison Lumière</div><p class="footer-tagline">L'élégance française depuis 1932.</p></div>
+      <div class="footer-col"><h4>Navigation</h4><a onclick="showPage('home')">Accueil</a><a onclick="showPage('ropa')">Vêtements</a><a onclick="showPage('accesorios')">Accessoires</a><a onclick="showPage('catalogo')">Catalogue</a></div>
+      <div class="footer-col"><h4>La Maison</h4><a onclick="showPage('nosotros')">Notre Histoire</a><a onclick="showPage('contacto')">Contact</a></div>
+      <div class="footer-col"><h4>Services</h4><a onclick="showPage('contacto')">Service Client</a><a onclick="showPage('contacto')">Livraisons</a></div>
+    </div>
+    <div class="footer-bottom"><p class="footer-copy">© 2025 Maison Lumière. Paris.</p><div class="footer-social"><a>Instagram</a><a>Pinterest</a></div></div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: CATALOGUE
+══════════════════════════════════════════ -->
+<div class="page" id="page-catalogo">
+  <div class="inner-hero" style="margin-top:70px">
+    <div class="inner-hero-bg"></div>
+    <div class="inner-hero-content">
+      <p class="section-eyebrow">Automne-Hiver 2025</p>
+      <h1 class="section-title" style="color:var(--creme)">Catalogue Complet</h1>
+      <div class="section-divider"></div>
+    </div>
+  </div>
+  <div class="breadcrumb"><span onclick="showPage('home')">Accueil</span> / Catalogue</div>
+
+  <div class="filter-bar">
+    <span class="filter-label">Trier par :</span>
+    <button class="filter-btn active">Nouveautés</button>
+    <button class="filter-btn">Prix croissant</button>
+    <button class="filter-btn">Prix décroissant</button>
+    <button class="filter-btn">Meilleures ventes</button>
+    <button class="filter-btn">Promotions</button>
+  </div>
+
+  <div class="product-grid">
+    <div class="product-card"><span class="product-badge">Nouveauté</span><img class="product-img" src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80" alt="Trench"><div class="product-info"><p class="product-category">Manteaux</p><h3 class="product-name">Trench Classique Beige</h3><p class="product-desc">Gabardine de coton, doublure en soie</p><div class="product-footer"><span class="product-price">€ 485</span><button class="add-btn">Ajouter</button></div></div></div>
+    <div class="product-card"><img class="product-img" src="https://images.unsplash.com/photo-1494631899672-8fd5de6e7aba?w=600&q=80" alt="Robe"><div class="product-info"><p class="product-category">Robes</p><h3 class="product-name">Robe Midi Crêpe Ivoire</h3><p class="product-desc">Crêpe de viscose, col en V</p><div class="product-footer"><span class="product-price">€ 320</span><button class="add-btn">Ajouter</button></div></div></div>
+    <div class="product-card"><span class="product-badge">-20%</span><img class="product-img" src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80" alt="Sac"><div class="product-info"><p class="product-category">Sacs</p><h3 class="product-name">Sac Baguette Cognac</h3><p class="product-desc">Cuir pleine fleur, quincaillerie dorée</p><div class="product-footer"><span class="product-price"><span class="old">€ 395</span>€ 316</span><button class="add-btn">Ajouter</button></div></div></div>
+    <div class="product-card"><img class="product-img" src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80" alt="Veste"><div class="product-info"><p class="product-category">Vestes</p><h3 class="product-name">Veste Tweed Noir & Blanc</h3><p class="product-desc">Tweed de laine, boutons dorés</p><div class="product-footer"><span class="product-price">€ 560</span><button class="add-btn">Ajouter</button></div></div></div>
+    <div class="product-card"><img class="product-img" src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=600&q=80" alt="Robe noire"><div class="product-info"><p class="product-category">Robes</p><h3 class="product-name">Petite Robe Noire</h3><p class="product-desc">Soie de charmeuse, col bateau</p><div class="product-footer"><span class="product-price">€ 445</span><button class="add-btn">Ajouter</button></div></div></div>
+    <div class="product-card"><img class="product-img" src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&q=80" alt="Foulard"><div class="product-info"><p class="product-category">Foulards</p><h3 class="product-name">Carré de Soie Imprimé</h3><p class="product-desc">Soie twill 90×90cm, motif exclusif</p><div class="product-footer"><span class="product-price">€ 180</span><button class="add-btn">Ajouter</button></div></div></div>
+    <div class="product-card"><img class="product-img" src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80" alt="Blazer"><div class="product-info"><p class="product-category">Vestes</p><h3 class="product-name">Blazer Crème Structuré</h3><p class="product-desc">Laine mélangée, revers crantés</p><div class="product-footer"><span class="product-price">€ 390</span><button class="add-btn">Ajouter</button></div></div></div>
+    <div class="product-card"><img class="product-img" src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80" alt="Pantalon"><div class="product-info"><p class="product-category">Pantalons</p><h3 class="product-name">Pantalon Large Caramel</h3><p class="product-desc">Crêpe de laine, jambes larges</p><div class="product-footer"><span class="product-price">€ 295</span><button class="add-btn">Ajouter</button></div></div></div>
+    <div class="product-card"><img class="product-img" src="https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=600&q=80" alt="Collier"><div class="product-info"><p class="product-category">Bijoux</p><h3 class="product-name">Collier Perles Baroque</h3><p class="product-desc">Perles d'eau douce, or 18 carats</p><div class="product-footer"><span class="product-price">€ 220</span><button class="add-btn">Ajouter</button></div></div></div>
+    <div class="product-card"><span class="product-badge">-15%</span><img class="product-img" src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=600&q=80" alt="Jupe"><div class="product-info"><p class="product-category">Jupes</p><h3 class="product-name">Jupe Midi Plissée Écrue</h3><p class="product-desc">Satin de soie, taille haute</p><div class="product-footer"><span class="product-price"><span class="old">€ 275</span>€ 234</span><button class="add-btn">Ajouter</button></div></div></div>
+    <div class="product-card"><img class="product-img" src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&q=80" alt="Tote"><div class="product-info"><p class="product-category">Sacs</p><h3 class="product-name">Tote Bag Cuir Naturel</h3><p class="product-desc">Cuir végétal tanné, anses longues</p><div class="product-footer"><span class="product-price">€ 465</span><button class="add-btn">Ajouter</button></div></div></div>
+    <div class="product-card"><img class="product-img" src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=600&q=80" alt="Chapeau"><div class="product-info"><p class="product-category">Chapeaux</p><h3 class="product-name">Chapeau Feutre Camel</h3><p class="product-desc">Feutre de laine, ruban en soie</p><div class="product-footer"><span class="product-price">€ 195</span><button class="add-btn">Ajouter</button></div></div></div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div><div class="footer-brand">Maison Lumière</div><p class="footer-tagline">L'élégance française depuis 1932.</p></div>
+      <div class="footer-col"><h4>Navigation</h4><a onclick="showPage('home')">Accueil</a><a onclick="showPage('ropa')">Vêtements</a><a onclick="showPage('accesorios')">Accessoires</a><a onclick="showPage('catalogo')">Catalogue</a></div>
+      <div class="footer-col"><h4>La Maison</h4><a onclick="showPage('nosotros')">Notre Histoire</a><a onclick="showPage('contacto')">Contact</a></div>
+      <div class="footer-col"><h4>Services</h4><a onclick="showPage('contacto')">Service Client</a></div>
+    </div>
+    <div class="footer-bottom"><p class="footer-copy">© 2025 Maison Lumière. Paris.</p><div class="footer-social"><a>Instagram</a><a>Pinterest</a></div></div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: LOOKBOOK
+══════════════════════════════════════════ -->
+<div class="page" id="page-lookbook">
+  <div class="inner-hero" style="margin-top:70px">
+    <div class="inner-hero-bg"></div>
+    <div class="inner-hero-content">
+      <p class="section-eyebrow">Inspiration & Style</p>
+      <h1 class="section-title" style="color:var(--creme)">Lookbook A/H 2025</h1>
+      <div class="section-divider"></div>
+    </div>
+  </div>
+  <div class="breadcrumb"><span onclick="showPage('home')">Accueil</span> / Lookbook</div>
+
+  <div class="section-header">
+    <p class="section-eyebrow">Éditorial</p>
+    <h2 class="section-title">La Femme <em>Lumière</em></h2>
+    <div class="section-divider"></div>
+    <p style="max-width:600px;margin:1.5rem auto 0;font-size:0.85rem;color:#666;line-height:1.8">Photographiée dans les rues de Paris, la femme Lumière incarne une élégance décontractée, moderne et intemporelle. Chaque silhouette raconte une histoire.</p>
+  </div>
+
+  <div class="lookbook-grid">
+    <div class="look-item large">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80" alt="Look 1">
+      <div class="look-label">Look 01 — Parisienne</div>
+    </div>
+    <div class="look-item">
+      <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80" alt="Look 2">
+      <div class="look-label">Look 02 — Soirée</div>
+    </div>
+    <div class="look-item">
+      <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80" alt="Look 3">
+      <div class="look-label">Look 03 — Bureau</div>
+    </div>
+    <div class="look-item">
+      <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80" alt="Look 4">
+      <div class="look-label">Look 04 — Week-end</div>
+    </div>
+    <div class="look-item">
+      <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=600&q=80" alt="Look 5">
+      <div class="look-label">Look 05 — Déjeuner</div>
+    </div>
+  </div>
+
+  <div class="featured-banner">
+    <img class="featured-img" src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=900&q=80" alt="Story">
+    <div class="featured-content">
+      <p class="featured-tag">Behind the Scenes</p>
+      <h3 class="featured-title">L'atelier<em>Parisien</em></h3>
+      <p class="featured-text">Plongez dans les coulisses de notre atelier parisien du Marais, là où chaque pièce prend vie. Nos artisans perpétuent un savoir-faire d'exception avec passion et précision.</p>
+      <button class="btn-primary" onclick="showPage('nosotros')">Découvrir Notre Histoire</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div><div class="footer-brand">Maison Lumière</div><p class="footer-tagline">L'élégance française depuis 1932.</p></div>
+      <div class="footer-col"><h4>Navigation</h4><a onclick="showPage('home')">Accueil</a><a onclick="showPage('ropa')">Vêtements</a><a onclick="showPage('accesorios')">Accessoires</a><a onclick="showPage('catalogo')">Catalogue</a></div>
+      <div class="footer-col"><h4>La Maison</h4><a onclick="showPage('nosotros')">Notre Histoire</a><a onclick="showPage('contacto')">Contact</a></div>
+      <div class="footer-col"><h4>Services</h4><a onclick="showPage('contacto')">Service Client</a></div>
+    </div>
+    <div class="footer-bottom"><p class="footer-copy">© 2025 Maison Lumière. Paris.</p><div class="footer-social"><a>Instagram</a><a>Pinterest</a></div></div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: NOTRE MAISON
+══════════════════════════════════════════ -->
+<div class="page" id="page-nosotros">
+  <div class="inner-hero" style="margin-top:70px">
+    <div class="inner-hero-bg"></div>
+    <div class="inner-hero-content">
+      <p class="section-eyebrow">Depuis 1932</p>
+      <h1 class="section-title" style="color:var(--creme)">Notre Maison</h1>
+      <div class="section-divider"></div>
+    </div>
+  </div>
+  <div class="breadcrumb"><span onclick="showPage('home')">Accueil</span> / Notre Maison</div>
+
+  <div class="about-section">
+    <img class="about-img" src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=900&q=80" alt="Atelier">
+    <div class="about-content">
+      <p class="section-eyebrow">Notre Histoire</p>
+      <h2 class="section-title" style="font-size:3rem;margin-bottom:2rem">L'héritage<br><em>Lumière</em></h2>
+      <p>Fondée en 1932 par Madeleine Lumière dans un petit atelier du Marais, notre maison incarne depuis trois générations l'essence même de la mode française. Madeleine avait une vision simple mais révolutionnaire : créer des vêtements qui durent, qui évoluent avec la femme qui les porte.</p>
+      <p>Aujourd'hui dirigée par sa petite-fille Camille Lumière, la maison perpétue cet héritage avec la même passion artisanale tout en intégrant une sensibilité contemporaine. Chaque saison, nos créatrices s'inspirent de l'architecture parisienne, des jardins français et des arts appliqués pour tisser de nouveaux chapitres dans l'histoire de Maison Lumière.</p>
+      <p>Notre atelier principal reste installé dans le Marais, à deux pas de la Place des Vosges, là où tout a commencé il y a plus de 90 ans.</p>
+      <button class="btn-primary" style="margin-top:1rem" onclick="showPage('contacto')">Nous Visiter</button>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-item"><span class="stat-number">1932</span><span class="stat-label">Fondation</span></div>
+    <div class="stat-item"><span class="stat-number">93+</span><span class="stat-label">Années d'histoire</span></div>
+    <div class="stat-item"><span class="stat-number">3</span><span class="stat-label">Générations</span></div>
+    <div class="stat-item"><span class="stat-number">12</span><span class="stat-label">Artisans experts</span></div>
+  </div>
+
+  <div class="section-header" style="padding-top:5rem">
+    <p class="section-eyebrow">Notre Engagement</p>
+    <h2 class="section-title">Nos <em>Valeurs</em></h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding:2rem 4rem 6rem;max-width:1200px;margin:0 auto">
+    <div style="text-align:center;padding:2.5rem">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:3rem;color:var(--or);margin-bottom:1rem">✦</div>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:1rem">Artisanat</h3>
+      <p style="font-size:0.82rem;color:#666;line-height:1.8">Chaque pièce est confectionnée à la main dans notre atelier parisien par des artisans formés aux techniques traditionnelles de la haute couture française.</p>
+    </div>
+    <div style="text-align:center;padding:2.5rem;background:#f8f4ee">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:3rem;color:var(--or);margin-bottom:1rem">❀</div>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:1rem">Durabilité</h3>
+      <p style="font-size:0.82rem;color:#666;line-height:1.8">Nous sélectionnons exclusivement des matières naturelles et certifiées. Nos pièces sont conçues pour durer des décennies, loin de la mode éphémère.</p>
+    </div>
+    <div style="text-align:center;padding:2.5rem">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:3rem;color:var(--or);margin-bottom:1rem">◈</div>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:1rem">Intemporalité</h3>
+      <p style="font-size:0.82rem;color:#666;line-height:1.8">Notre philosophie rejette les tendances éphémères. Nous créons des silhouettes classiques qui transcendent les saisons et les années.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div><div class="footer-brand">Maison Lumière</div><p class="footer-tagline">L'élégance française depuis 1932.</p></div>
+      <div class="footer-col"><h4>Navigation</h4><a onclick="showPage('home')">Accueil</a><a onclick="showPage('ropa')">Vêtements</a><a onclick="showPage('accesorios')">Accessoires</a><a onclick="showPage('catalogo')">Catalogue</a></div>
+      <div class="footer-col"><h4>La Maison</h4><a onclick="showPage('nosotros')">Notre Histoire</a><a onclick="showPage('contacto')">Contact</a></div>
+      <div class="footer-col"><h4>Services</h4><a onclick="showPage('contacto')">Service Client</a></div>
+    </div>
+    <div class="footer-bottom"><p class="footer-copy">© 2025 Maison Lumière. Paris.</p><div class="footer-social"><a>Instagram</a><a>Pinterest</a></div></div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: CONTACT
+══════════════════════════════════════════ -->
+<div class="page" id="page-contacto">
+  <div class="inner-hero" style="margin-top:70px">
+    <div class="inner-hero-bg"></div>
+    <div class="inner-hero-content">
+      <p class="section-eyebrow">Nous Écrire</p>
+      <h1 class="section-title" style="color:var(--creme)">Contact</h1>
+      <div class="section-divider"></div>
+    </div>
+  </div>
+  <div class="breadcrumb"><span onclick="showPage('home')">Accueil</span> / Contact</div>
+
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h3>Parlons <em style="font-style:italic;color:var(--or)">ensemble</em></h3>
+      <p style="font-size:0.85rem;color:#666;line-height:1.8;margin:1rem 0 2.5rem">Notre équipe est à votre disposition pour toute question concernant nos collections, les tailles, les livraisons ou pour organiser une consultation privée dans notre boutique.</p>
+      <div class="contact-detail">
+        <p class="contact-detail-label">Boutique Paris</p>
+        <p>12 Rue des Rosiers, Le Marais<br>75004 Paris, France</p>
+      </div>
+      <div class="contact-detail">
+        <p class="contact-detail-label">Horaires</p>
+        <p>Lundi – Samedi : 10h – 19h30<br>Dimanche : 11h – 17h</p>
+      </div>
+      <div class="contact-detail">
+        <p class="contact-detail-label">Téléphone</p>
+        <p>+33 (0)1 42 77 88 99</p>
+      </div>
+      <div class="contact-detail">
+        <p class="contact-detail-label">Email</p>
+        <p>contact@maisonlumiere.fr<br>presse@maisonlumiere.fr</p>
+      </div>
+      <div class="contact-detail">
+        <p class="contact-detail-label">Service Client</p>
+        <p>Du lundi au vendredi, 9h – 18h<br>Réponse sous 24 heures</p>
+      </div>
+    </div>
+
+    <div>
+      <p class="section-eyebrow" style="margin-bottom:2rem">Formulaire de Contact</p>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group"><label>Prénom</label><input type="text" placeholder="Marie"></div>
+          <div class="form-group"><label>Nom</label><input type="text" placeholder="Dupont"></div>
+        </div>
+        <div class="form-group"><label>Email</label><input type="email" placeholder="marie@exemple.fr"></div>
+        <div class="form-group"><label>Téléphone</label><input type="tel" placeholder="+33 6 12 34 56 78"></div>
+        <div class="form-group">
+          <label>Sujet</label>
+          <select>
+            <option>Renseignement produit</option>
+            <option>Commande en cours</option>
+            <option>Retour / Échange</option>
+            <option>Consultation privée</option>
+            <option>Presse & Collaboration</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Message</label><textarea placeholder="Votre message..."></textarea></div>
+        <button class="btn-primary" style="width:100%;padding:1.2rem">Envoyer le Message</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#f8f4ee;padding:4rem;text-align:center">
+    <p class="section-eyebrow">Consultation Privée</p>
+    <h2 class="section-title" style="font-size:2.5rem">Un moment <em>rien que pour vous</em></h2>
+    <p style="max-width:550px;margin:1.5rem auto;font-size:0.85rem;color:#666;line-height:1.8">Réservez une session exclusive avec notre styliste personnelle dans notre boutique du Marais. Champagne, conseils sur-mesure et accès à notre collection privée vous attendent.</p>
+    <button class="btn-primary" style="margin-top:1rem">Réserver une Session</button>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div><div class="footer-brand">Maison Lumière</div><p class="footer-tagline">L'élégance française depuis 1932.</p></div>
+      <div class="footer-col"><h4>Navigation</h4><a onclick="showPage('home')">Accueil</a><a onclick="showPage('ropa')">Vêtements</a><a onclick="showPage('accesorios')">Accessoires</a><a onclick="showPage('catalogo')">Catalogue</a></div>
+      <div class="footer-col"><h4>La Maison</h4><a onclick="showPage('nosotros')">Notre Histoire</a><a onclick="showPage('contacto')">Contact</a></div>
+      <div class="footer-col"><h4>Services</h4><a onclick="showPage('contacto')">Service Client</a></div>
+    </div>
+    <div class="footer-bottom"><p class="footer-copy">© 2025 Maison Lumière. Paris.</p><div class="footer-social"><a>Instagram</a><a>Pinterest</a></div></div>
+  </footer>
+</div>
+
+<!-- ── SCRIPTS ── -->
+<script>
+  function showPage(pageId) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // Show target
+    document.getElementById('page-' + pageId).classList.add('active');
+    // Update nav
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    const navEl = document.getElementById('nav-' + pageId);
+    if (navEl) navEl.classList.add('active');
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      this.closest('.filter-bar').querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
