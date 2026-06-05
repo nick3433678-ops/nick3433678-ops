@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beauty Blue Store</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4fbff;
+color:#333;
+}
+
+header{
+background:#a7d8f5;
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:sticky;
+top:0;
+}
+
+header h1{
+color:white;
+}
+
+nav a{
+text-decoration:none;
+color:white;
+margin:0 15px;
+font-weight:bold;
+}
+
+.hero{
+text-align:center;
+padding:80px 20px;
+background:linear-gradient(#dff4ff,#ffffff);
+}
+
+.hero h2{
+font-size:40px;
+color:#4a90c2;
+margin-bottom:10px;
+}
+
+.hero p{
+font-size:18px;
+}
+
+section{
+padding:50px 20px;
+}
+
+.titulo{
+text-align:center;
+margin-bottom:30px;
+color:#4a90c2;
+}
+
+.productos{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:25px;
+}
+
+.card{
+background:white;
+width:280px;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 4px 12px rgba(0,0,0,.1);
+transition:.3s;
+}
+
+.card:hover{
+transform:scale(1.03);
+}
+
+.card img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.card h3{
+padding:10px;
+}
+
+.card p{
+padding:0 10px 10px;
+}
+
+.card button{
+margin:10px;
+width:90%;
+padding:12px;
+background:#6bb7e8;
+border:none;
+color:white;
+border-radius:8px;
+cursor:pointer;
+}
+
+.card button:hover{
+background:#4a90c2;
+}
+
+.carrito{
+background:white;
+max-width:700px;
+margin:auto;
+padding:25px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+.carrito ul{
+margin:15px 0;
+}
+
+.recibo{
+margin-top:20px;
+padding:20px;
+background:#eef9ff;
+border-radius:10px;
+}
+
+footer{
+background:#a7d8f5;
+text-align:center;
+padding:20px;
+margin-top:40px;
+color:white;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Beauty Blue Store</h1>
+
+<nav>
+<a href="#perfumes">Perfumes</a>
+<a href="#maquillaje">Maquillaje</a>
+<a href="#facial">Cuidado Facial</a>
+<a href="#carrito">Carrito</a>
+</nav>
+</header>
+
+<section class="hero">
+<h2>Belleza y Elegancia</h2>
+<p>Perfumes, maquillaje y cuidado facial en un solo lugar.</p>
+</section>
+
+<section id="perfumes">
+<h2 class="titulo"> Perfumes</h2>
+
+<div class="productos">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1541643600914-78b084683601?w=600" alt="">
+<h3>Perfume Rosé</h3>
+<p>$850</p>
+<button onclick="agregar('Perfume Rosé',850)">Agregar</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600" alt="">
+<h3>Luxury Gold</h3>
+<p>$1200</p>
+<button onclick="agregar('Luxury Gold',1200)">Agregar</button>
+</div>
+
+</div>
+</section>
+
+<section id="maquillaje">
+<h2 class="titulo"> Maquillaje</h2>
+
+<div class="productos">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600" alt="">
+<h3>Labial Mate</h3>
+<p>$250</p>
+<button onclick="agregar('Labial Mate',250)">Agregar</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=600" alt="">
+<h3>Paleta de Sombras</h3>
+<p>$450</p>
+<button onclick="agregar('Paleta de Sombras',450)">Agregar</button>
+</div>
+
+</div>
+</section>
+
+<section id="facial">
+<h2 class="titulo"> Cuidado Facial</h2>
+
+<div class="productos">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600" alt="">
+<h3>Crema Facial</h3>
+<p>$390</p>
+<button onclick="agregar('Crema Facial',390)">Agregar</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600" alt="">
+<h3>Limpiador Facial</h3>
+<p>$320</p>
+<button onclick="agregar('Limpiador Facial',320)">Agregar</button>
+</div>
+
+</div>
+</section>
+
+<section id="carrito">
+<div class="carrito">
+
+<h2> Punto de Venta</h2>
+
+<ul id="lista"></ul>
+
+<p><strong>Subtotal:</strong> $<span id="subtotal">0</span></p>
+<p><strong>IVA (16%):</strong> $<span id="iva">0</span></p>
+<h3>Total: $<span id="total">0</span></h3>
+
+<br>
+
+<button onclick="generarRecibo()" style="padding:12px 20px;background:#6bb7e8;color:white;border:none;border-radius:8px;">
+Generar Recibo
+</button>
+
+<div id="recibo" class="recibo"></div>
+
+</div>
+</section>
+
+<footer>
+Proyecto Escolar - Beauty Blue Store 
+</footer>
+
+<script>
+
+let carrito=[];
+let subtotal=0;
+
+function agregar(nombre,precio){
+
+carrito.push({
+nombre:nombre,
+precio:precio
+});
+
+subtotal += precio;
+
+actualizar();
+}
+
+function actualizar(){
+
+const lista=document.getElementById("lista");
+lista.innerHTML="";
+
+carrito.forEach(producto=>{
+
+let li=document.createElement("li");
+
+li.innerHTML=
+producto.nombre + " - $" + producto.precio;
+
+lista.appendChild(li);
+
+});
+
+let iva=subtotal*0.16;
+let total=subtotal+iva;
+
+document.getElementById("subtotal").textContent=subtotal.toFixed(2);
+document.getElementById("iva").textContent=iva.toFixed(2);
+document.getElementById("total").textContent=total.toFixed(2);
+
+}
+
+function generarRecibo(){
+
+let iva=subtotal*0.16;
+let total=subtotal+iva;
+
+let fecha=new Date();
+
+document.getElementById("recibo").innerHTML=`
+
+<h3> RECIBO DE COMPRA</h3>
+
+<p>Fecha: ${fecha.toLocaleString()}</p>
+
+<hr>
+
+${carrito.map(p=>`
+<p>${p.nombre} - $${p.precio}</p>
+`).join("")}
+
+<hr>
+
+<p>Subtotal: $${subtotal.toFixed(2)}</p>
+
+<p>IVA (16%): $${iva.toFixed(2)}</p>
+
+<h3>Total: $${total.toFixed(2)}</h3>
+
+<p>Gracias por su compra </p>
+
+`;
+
+}
+
+</script>
+
+</body>
+</html>
